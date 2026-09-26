@@ -1,0 +1,154 @@
+local Players = game:GetService("Players"); local RunService = game:GetService("RunService"); local UserInputService = game:GetService("UserInputService")
+local Stats = game:GetService("Stats"); local Player = Players.LocalPlayer; local PlayerGui = Player:WaitForChild("PlayerGui")
+local existingGui = PlayerGui:FindFirstChild("FPSPingHUD")
+if existingGui then existingGui:Destroy() end
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "FPSPingHUD"; ScreenGui.ResetOnSpawn = false; ScreenGui.DisplayOrder = 2147483647
+ScreenGui.IgnoreGuiInset = false; ScreenGui.Parent = PlayerGui
+local MainFrame = Instance.new("Frame")
+MainFrame.Name = "MainFrame"; MainFrame.Size = UDim2.new(0, 130, 0, 50); MainFrame.AnchorPoint = Vector2.new(0.5, 0)
+MainFrame.Position = UDim2.new(0.5, 0, 0, 10); MainFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+MainFrame.BackgroundTransparency = 0.45; MainFrame.BorderSizePixel = 0; MainFrame.Active = true
+MainFrame.Parent = ScreenGui
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = UDim.new(0, 4); UICorner.Parent = MainFrame
+local UIStroke = Instance.new("UIStroke")
+UIStroke.Color = Color3.fromRGB(255, 255, 255); UIStroke.Transparency = 0.5; UIStroke.Thickness = 1
+UIStroke.Parent = MainFrame
+local ContentFrame = Instance.new("Frame")
+ContentFrame.Name = "ContentFrame"; ContentFrame.BackgroundTransparency = 1; ContentFrame.Size = UDim2.new(1, -26, 1, 0)
+ContentFrame.Position = UDim2.new(0, 0, 0, 0); ContentFrame.Parent = MainFrame
+local ListLayout = Instance.new("UIListLayout")
+ListLayout.FillDirection = Enum.FillDirection.Vertical; ListLayout.SortOrder = Enum.SortOrder.LayoutOrder; ListLayout.Padding = UDim.new(0, 0)
+ListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center; ListLayout.VerticalAlignment = Enum.VerticalAlignment.Center; ListLayout.Parent = ContentFrame
+local Padding = Instance.new("UIPadding")
+Padding.PaddingTop = UDim.new(0, 4); Padding.PaddingBottom = UDim.new(0, 4); Padding.PaddingLeft = UDim.new(0, 8)
+Padding.PaddingRight = UDim.new(0, 4); Padding.Parent = ContentFrame
+local FPSRow = Instance.new("Frame")
+FPSRow.Name = "FPSRow"; FPSRow.AutomaticSize = Enum.AutomaticSize.X; FPSRow.Size = UDim2.new(0, 0, 0, 20)
+FPSRow.BackgroundTransparency = 1; FPSRow.LayoutOrder = 1; FPSRow.Parent = ContentFrame
+local FPSRowLayout = Instance.new("UIListLayout")
+FPSRowLayout.FillDirection = Enum.FillDirection.Horizontal; FPSRowLayout.SortOrder = Enum.SortOrder.LayoutOrder; FPSRowLayout.Padding = UDim.new(0, 4)
+FPSRowLayout.VerticalAlignment = Enum.VerticalAlignment.Center; FPSRowLayout.HorizontalAlignment = Enum.HorizontalAlignment.Left; FPSRowLayout.Parent = FPSRow
+local FPSTag = Instance.new("TextLabel")
+FPSTag.Name = "FPSTag"; FPSTag.AutomaticSize = Enum.AutomaticSize.X; FPSTag.Size = UDim2.new(0, 0, 1, 0); FPSTag.BackgroundTransparency = 1
+FPSTag.Font = Enum.Font.GothamBold; FPSTag.TextSize = 12; FPSTag.TextXAlignment = Enum.TextXAlignment.Left
+FPSTag.TextColor3 = Color3.fromRGB(255, 255, 255); FPSTag.Text = "FPS"; FPSTag.LayoutOrder = 1
+FPSTag.Parent = FPSRow
+local FPSLabel = Instance.new("TextLabel")
+FPSLabel.Name = "FPSLabel"; FPSLabel.AutomaticSize = Enum.AutomaticSize.X; FPSLabel.Size = UDim2.new(0, 0, 1, 0)
+FPSLabel.BackgroundTransparency = 1; FPSLabel.Font = Enum.Font.GothamBold; FPSLabel.TextSize = 14
+FPSLabel.TextXAlignment = Enum.TextXAlignment.Left; FPSLabel.TextColor3 = Color3.fromRGB(255, 255, 255); FPSLabel.Text = "--"
+FPSLabel.LayoutOrder = 2; FPSLabel.Parent = FPSRow
+local Divider = Instance.new("Frame")
+Divider.Name = "Divider"; Divider.Size = UDim2.new(1, 0, 0, 1); Divider.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Divider.BackgroundTransparency = 0.85; Divider.BorderSizePixel = 0; Divider.LayoutOrder = 2
+Divider.Parent = ContentFrame
+local PingRow = Instance.new("Frame")
+PingRow.Name = "PingRow"; PingRow.AutomaticSize = Enum.AutomaticSize.X; PingRow.Size = UDim2.new(0, 0, 0, 20)
+PingRow.BackgroundTransparency = 1; PingRow.LayoutOrder = 3; PingRow.Parent = ContentFrame
+local PingRowLayout = Instance.new("UIListLayout")
+PingRowLayout.FillDirection = Enum.FillDirection.Horizontal; PingRowLayout.SortOrder = Enum.SortOrder.LayoutOrder; PingRowLayout.Padding = UDim.new(0, 4)
+PingRowLayout.VerticalAlignment = Enum.VerticalAlignment.Center; PingRowLayout.HorizontalAlignment = Enum.HorizontalAlignment.Left; PingRowLayout.Parent = PingRow
+local PingTag = Instance.new("TextLabel")
+PingTag.Name = "PingTag"; PingTag.AutomaticSize = Enum.AutomaticSize.X; PingTag.Size = UDim2.new(0, 0, 1, 0); PingTag.BackgroundTransparency = 1
+PingTag.Font = Enum.Font.GothamBold; PingTag.TextSize = 12; PingTag.TextXAlignment = Enum.TextXAlignment.Left
+PingTag.TextColor3 = Color3.fromRGB(255, 255, 255); PingTag.Text = "PING"; PingTag.LayoutOrder = 1
+PingTag.Parent = PingRow
+local PingLabel = Instance.new("TextLabel")
+PingLabel.Name = "PingLabel"; PingLabel.AutomaticSize = Enum.AutomaticSize.X; PingLabel.Size = UDim2.new(0, 0, 1, 0)
+PingLabel.BackgroundTransparency = 1; PingLabel.Font = Enum.Font.GothamBold; PingLabel.TextSize = 14
+PingLabel.TextXAlignment = Enum.TextXAlignment.Left; PingLabel.TextColor3 = Color3.fromRGB(255, 255, 255); PingLabel.Text = "--"
+PingLabel.LayoutOrder = 2; PingLabel.Parent = PingRow
+local ToggleButton = Instance.new("TextButton")
+ToggleButton.Name = "ToggleButton"; ToggleButton.Size = UDim2.new(0, 18, 0, 18); ToggleButton.AnchorPoint = Vector2.new(1, 0.5)
+ToggleButton.Position = UDim2.new(1, -4, 0.5, 0); ToggleButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+ToggleButton.BackgroundTransparency = 0.3; ToggleButton.AutoButtonColor = false; ToggleButton.Text = "\226\150\178"
+ToggleButton.Font = Enum.Font.GothamBold; ToggleButton.TextSize = 10; ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+ToggleButton.Parent = MainFrame
+local ToggleCorner = Instance.new("UICorner")
+ToggleCorner.CornerRadius = UDim.new(1, 0); ToggleCorner.Parent = ToggleButton
+local ToggleStroke = Instance.new("UIStroke")
+ToggleStroke.Color = Color3.fromRGB(255, 255, 255); ToggleStroke.Transparency = 0.2; ToggleStroke.Thickness = 1
+ToggleStroke.Parent = ToggleButton
+local isCollapsed = false
+local TweenService = game:GetService("TweenService")
+ToggleButton.MouseButton1Click:Connect(function()
+    isCollapsed = not isCollapsed
+    if isCollapsed then
+        ListLayout.FillDirection = Enum.FillDirection.Horizontal; ListLayout.Padding = UDim.new(0, 8)
+        Divider.Visible = false
+        TweenService:Create(MainFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = UDim2.new(0, 190, 0, 34)}):Play()
+        TweenService:Create(ToggleButton, TweenInfo.new(0.25), {Rotation = 180}):Play()
+    else
+        ListLayout.FillDirection = Enum.FillDirection.Vertical; ListLayout.Padding = UDim.new(0, 0)
+        Divider.Visible = true
+        TweenService:Create(MainFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = UDim2.new(0, 130, 0, 50)}):Play()
+        TweenService:Create(ToggleButton, TweenInfo.new(0.25), {Rotation = 0}):Play()
+    end
+end)
+local dragging, dragInput, dragStart, startPos
+MainFrame.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = true; dragStart = input.Position; startPos = MainFrame.Position
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
+end)
+MainFrame.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+        dragInput = input
+    end
+end)
+UserInputService.InputChanged:Connect(function(input)
+    if input == dragInput and dragging then
+        local delta = input.Position - dragStart
+        MainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    end
+end)
+local frameCount = 0; local lastTick = tick(); local currentFPS = 60
+local UPDATE_INTERVAL = 0.3
+RunService.RenderStepped:Connect(function()
+    frameCount = frameCount + 1
+    local currentTime = tick()
+    if currentTime - lastTick >= UPDATE_INTERVAL then
+        currentFPS = math.floor(frameCount / (currentTime - lastTick)); frameCount = 0; lastTick = currentTime
+    end
+    local pingValue = 0
+    pcall(function()
+        pingValue = math.floor(Stats.Network.ServerStatsItem["Data Ping"]:GetValue())
+    end)
+    local fpsColor = Color3.fromRGB(255, 255, 255)
+    if currentFPS >= 100 then
+        local hue = (tick() % 5) / 5; fpsColor = Color3.fromHSV(hue, 1, 1)
+    elseif currentFPS >= 70 then
+        fpsColor = Color3.fromRGB(170, 0, 255)
+    elseif currentFPS >= 50 then
+        fpsColor = Color3.fromRGB(0, 255, 0)
+    elseif currentFPS >= 20 then
+        fpsColor = Color3.fromRGB(255, 120, 120)
+    elseif currentFPS >= 10 then
+        fpsColor = Color3.fromRGB(255, 0, 0)
+    elseif currentFPS >= 5 then
+        fpsColor = Color3.fromRGB(150, 0, 0)
+    else
+        fpsColor = Color3.fromRGB(40, 0, 0)
+    end
+    local pingColor = Color3.fromRGB(255, 255, 255)
+    if pingValue <= 10 then
+        local hue = (tick() % 5) / 5; pingColor = Color3.fromHSV(hue, 1, 1)
+    elseif pingValue <= 30 then
+        pingColor = Color3.fromRGB(170, 0, 255)
+    elseif pingValue <= 200 then
+        pingColor = Color3.fromRGB(0, 255, 0)
+    elseif pingValue <= 500 then
+        pingColor = Color3.fromRGB(255, 100, 0)
+    else
+        pingColor = Color3.fromRGB(150, 0, 0)
+    end
+    FPSLabel.Text = tostring(currentFPS); FPSLabel.TextColor3 = fpsColor
+    PingLabel.Text = tostring(pingValue) .. " ms"; PingLabel.TextColor3 = pingColor
+end)
